@@ -1,7 +1,6 @@
 #include "Converter.hpp"
 
 Converter::Converter()
-: value(0)
 { }
 
 Converter::~Converter()
@@ -16,63 +15,130 @@ Converter &Converter::operator=(const Converter &_cv)
 {
 	if (this == &_cv)
 		return (*this);
-	this->value = _cv.getValue();
 	return (*this);
 }
 
-double Converter::getValue(void) const
+void Converter::toChar(char *str)
 {
-	return (this->value);
+	std::cout << "char : ";
+	std::string check(str);
+	if (check == "-inff" || check == "inff" || check == "nanf"
+		|| check == "-inf" || check == "inf" || check == "nan")
+	{
+		std::cout << "impossible" << std::endl;
+		return ;
+	}
+	double d;
+	try
+	{
+		d = std::stod(str);
+	}
+	catch(std::invalid_argument &)
+	{ 
+    	std::cout << "Invalid input" << std::endl;
+		return ;
+	}
+	catch(std::out_of_range &)
+	{
+    	std::cout << "impossible" << std::endl;
+		return ;
+	}
+
+	if (d > std::numeric_limits<char>::max()
+		|| d < std::numeric_limits<char>::min())
+	{
+		std::cout << "impossible" << std::endl;
+		return ;
+	}
+	if (d < 32 || d > 126)
+	{
+		std::cout << "Non displayable" << std::endl;
+		return ;
+	}
+	char c = static_cast<int>(d);
+	std::cout << c << std::endl;
 }
 
-void Converter::setValue(double _value)
+void Converter::toInt(char *str)
 {
-	this->value = _value;
+	std::cout << "int : ";
+	std::string check(str);
+	if (check == "-inff" || check == "inff" || check == "nanf"
+		|| check == "-inf" || check == "inf" || check == "nan")
+	{
+		std::cout << "impossible" << std::endl;
+		return ;
+	}
+	double d;
+	try
+	{
+		d = std::stod(str);
+	}
+	catch(std::invalid_argument &)
+	{ 
+    	std::cout << "Invalid input" << std::endl;
+		return ;
+	}
+	catch(std::out_of_range &)
+	{
+    	std::cout << "impossible" << std::endl;
+		return ;
+	}
+
+	if (d > std::numeric_limits<int>::max()
+		|| d < std::numeric_limits<int>::min())
+	{
+		std::cout << "impossible" << std::endl;
+		return ;
+	}
+	std::cout << static_cast<int>(d) << std::endl;
 }
 
-void Converter::setValue(char *str)
+void Converter::toFloat(char *str)
 {
-	this->value = std::stod(str);
+	std::cout << "float : ";
+	float fv;
+	try
+	{
+		fv = std::stof(str);
+	}
+	catch(std::invalid_argument &)
+	{ 
+    	std::cout << "Invalid input" << std::endl;
+		return ;
+	}
+	catch(std::out_of_range &)
+	{
+    	std::cout << "impossible" << std::endl;
+		return ;
+	}
+	float f = static_cast<float>(fv);
+	if (f - static_cast<int>(f) != 0)
+		std::cout << f << "f" << std::endl;
+	else
+		std::cout << f << ".0f" << std::endl;
 }
-
-char Converter::toChar()
+void Converter::toDouble(char *str)
 {
-	if (std::isinf(this->value) || std::isnan(this->value))
-		throw Converter::ImpossibleException();
-	char ret = static_cast<int>(this->value);
-	if (ret < 32 || ret > 126)
-		throw Converter::NonDisplayableException();
-	return (ret);
-}
-
-int Converter::toInt()
-{
-	if (std::isinf(this->value) || std::isnan(this->value)
-		|| this->value > std::numeric_limits<int>::max()
-		|| this->value < std::numeric_limits<int>::min())
-		throw Converter::ImpossibleException();
-	return (static_cast<int>(this->value));
-}
-
-float Converter::toFloat()
-{
-	if (std::isinf(this->value) || std::isnan(this->value))
-		return (static_cast<float>(this->value));
-	/*if (this->value > std::numeric_limits<float>::max()
-		|| this->value < std::numeric_limits<float>::min())
-		throw Converter::ImpossibleException();*/
-	return (static_cast<float>(this->value));
-}
-double Converter::toDouble()
-{
-	return (static_cast<double>(this->value));
-}
-
-const char *Converter::ImpossibleException::what() const throw()
-{
-	return ("impossible");
-}
-const char *Converter::NonDisplayableException::what() const throw()
-{
-	return ("Non displayable");
+	std::cout << "double : ";
+	double dv;
+	try
+	{
+		dv = std::stod(str);
+	}
+	catch(std::invalid_argument &)
+	{ 
+    	std::cout << "Invalid input" << std::endl;
+		return ;
+	}
+	catch(std::out_of_range &)
+	{
+    	std::cout << "impossible" << std::endl;
+		return ;
+	}
+	double d =  static_cast<double>(dv);
+	if (d - static_cast<int>(d) != 0)
+		std::cout << d << std::endl;
+	else
+		std::cout << d << ".0" << std::endl;
 }

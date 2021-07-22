@@ -8,22 +8,16 @@
 
 class Converter
 {
-private:
-	double value;
 public:
 	Converter();
 	~Converter();
 	Converter(const Converter &_cv);
 	Converter &operator=(const Converter &_cv);
 
-	double getValue(void) const;
-	void setValue(double _value);
-	void setValue(char *str);
-
-	char toChar();
-	int toInt();
-	float toFloat();
-	double toDouble();
+	void toChar(char *str);
+	void toInt(char *str);
+	void toFloat(char *str);
+	void toDouble(char *str);
 
 	class ImpossibleException : public std::exception {
 		virtual const char *what() const throw();
