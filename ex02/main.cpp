@@ -21,5 +21,7 @@ int main()
 		delete o;
 	}
 
+	system("leaks base");
+
 	return (0);
 }
